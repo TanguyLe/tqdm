@@ -141,8 +141,10 @@ class Bar(object):
       + `u`: unicode (`charset=self.UTF` override)
       + `b`: blank (`charset="  "` override)
     """
-    ASCII = " 123456789#"
-    UTF = u" " + u''.join(map(chr, range(0x258F, 0x2587, -1)))
+    ASCII = "========="
+    # ASCII = " 123456789#"
+    UTF = " Ↄ="
+    # UTF = u" " + u''.join(map(chr, range(0x258F, 0x2587, -1)))
     BLANK = "  "
     COLOUR_RESET = '\x1b[0m'
     COLOUR_RGB = '\x1b[38;2;%d;%d;%dm'
@@ -589,8 +591,11 @@ class tqdm(Comparable):
         else:
             l_bar = ''
 
-        r_bar = f'| {n_fmt}/{total_fmt} [{elapsed_str}<{remaining_str}, {rate_fmt}{postfix}]'
+        r_bar = f'{n_fmt}/{total_fmt} [{elapsed_str}<{remaining_str}, {rate_fmt}{postfix}]'
 
+        if total and remaining == 0:
+            r_bar = "Ↄ " + r_bar
+        
         # Custom bar formatting
         # Populate a dict with all available progress indicators
         format_dict = {
@@ -615,7 +620,7 @@ class tqdm(Comparable):
             frac = n / total
             percentage = frac * 100
 
-            l_bar += '{0:3.0f}%|'.format(percentage)
+            l_bar += '{0:3.0f}% Ɛ'.format(percentage)
 
             if ncols == 0:
                 return l_bar[:-1] + r_bar[1:]
